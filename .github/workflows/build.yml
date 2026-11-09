@@ -1,0 +1,37 @@
+name: Build ALEX Waypoints 2.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-mod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build Fabric mod
+        working-directory: ALEX_Waypoints_Overlay_2.0/fabric-mod
+        run: gradle build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ALEX-Waypoints-Fabric-JAR
+          path: ALEX_Waypoints_Overlay_2.0/fabric-mod/build/libs/*.jar
+
+  build-overlay:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ilammy/msvc-dev-cmd@v1
+      - name: Build overlay EXE
+        working-directory: ALEX_Waypoints_Overlay_2.0/overlay
+        run: cl /nologo /std:c++17 /EHsc /DUNICODE /D_UNICODE main.cpp /link /SUBSYSTEM:WINDOWS User32.lib Gdi32.lib /OUT:ALEX-Overlay.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ALEX-Waypoints-Overlay-EXE
+          path: ALEX_Waypoints_Overlay_2.0/overlay/ALEX-Overlay.exe
