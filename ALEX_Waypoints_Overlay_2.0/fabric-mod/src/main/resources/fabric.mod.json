@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "alexwaypoints",
+  "version": "${version}",
+  "name": "ALEX Waypoints",
+  "description": "Client-side waypoint manager with separate desktop overlay feed.",
+  "environment": "client",
+  "entrypoints": { "client": ["it.alex.waypoints.AlexWaypointsClient"] },
+  "depends": { "fabricloader": ">=0.16.14", "minecraft": "1.21.8", "java": ">=21", "fabric-api": "*" }
+}
